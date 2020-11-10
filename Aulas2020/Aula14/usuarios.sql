@@ -13,6 +13,7 @@ create table telefones(
 	telefone varchar(15) not null,
 	constraint fk_tel_pess foreign key (id_pessoa)
 	references pessoas(id_pessoa)
+	on delete cascade
 );
 create table usuarios(
 	id_pessoa integer not null,
