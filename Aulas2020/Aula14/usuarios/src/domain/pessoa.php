@@ -79,12 +79,14 @@
 			try{
 				$con = new Conexao();
 				$resultSet = Conexao::getInstancia()->query($query);
-				while($linha = $resultSet->fetchObject()){
-					$pessoa = new Pessoa();
-					$pessoa->setIdPessoa($linha->id_pessoa);
-					$pessoa->setNome($linha->nome);
-					$pessoa->setTelefone($linha->telefone);
-					$pessoas[] = $pessoa;
+				if($resultSet) {
+					while($linha = $resultSet->fetchObject()){
+						$pessoa = new Pessoa();
+						$pessoa->setIdPessoa($linha->id_pessoa);
+						$pessoa->setNome($linha->nome);
+						$pessoa->setTelefone($linha->telefone);
+						$pessoas[] = $pessoa;
+					}
 				}
 				$con = null;
 			}catch(PDOException $e){

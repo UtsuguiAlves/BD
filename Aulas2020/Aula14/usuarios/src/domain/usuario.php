@@ -85,13 +85,15 @@
 			try{
 				$con = new Conexao();
 				$resultSet = Conexao::getInstancia()->query($query);//O método query de PDO retorna uma tabela como resultSet
-				while($linha = $resultSet->fetchObject()){
-					$usuario = new Usuario();
-					$usuario->setIdPessoa($linha->id_pessoa);
-					$usuario->setLogin($linha->login);
-					$usuario->setSenha($linha->senha);
-					$usuario->setTipo($linha->tipo);
-					$usuarios[] = $usuario;
+				if($resultSet) {
+					while($linha = $resultSet->fetchObject()){
+						$usuario = new Usuario();
+						$usuario->setIdPessoa($linha->id_pessoa);
+						$usuario->setLogin($linha->login);
+						$usuario->setSenha($linha->senha);
+						$usuario->setTipo($linha->tipo);
+						$usuarios[] = $usuario;
+					}
 				}
 				$con = null;
 			}catch(PDOException $e){
@@ -150,5 +152,32 @@
 				$resultado["erro"] = "Erro de conexão com o BD";	
 			}
 			return $resultado;
+		}
+		function login($login, $senha) {
+			$usuario = null;
+			$query = "SELECT * FROM usuarios WHERE login = '$login'";
+			try{
+				$con = new Conexao();
+				$resultSet = Conexao::getInstancia()->query($query);
+				if($resultSet) {
+					$query = "SELECT * FROM usuarios WHERE login = '$login' AND senha = md5('$senha')";
+					$resultSet = Conexao::getInstancia()->query($query);
+					if($dados = $resultSet->fetchObject()) {
+						$usuario = new Usuario();
+						$usuario->setIdPessoa($dados->id_pessoa);
+						$usuario->setLogin($dados->login);
+						$usuario->setSenha($dados->senha);
+						$usuario->setTipo($dados->tipo);
+					} else {
+						$usuario["erro"] = "Senha não confere";
+					}
+				}else{
+					$usuario["erro"] = "login não encontrado";
+				}
+				$con = null;
+			}catch (PDOException $e) {
+				$usuario["erro"] = "Erro de conexão com o BD";
+			}
+			return $usuario;
 		}
 	}

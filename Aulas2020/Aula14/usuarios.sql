@@ -17,7 +17,7 @@ create table telefones(
 );
 create table usuarios(
 	id_pessoa integer not null,
-	login varchar(12) not null,
+	login varchar(12) not null unique,
 	senha varchar(50) not null,
 	tipo varchar(15) not null,
 	constraint fk_possui foreign key (id_pessoa)
