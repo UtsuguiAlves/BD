@@ -1,4 +1,9 @@
 <?php
+
+	$urlFront="http://localhost/usuarios";
+	header("Access-Control-Allow-Origin:".$urlFront);
+	header("Access-Control-Allow-Methods: GET, PUT, POST, DELETE");
+
 	//No PHP somente as constantes $_GET e $_POST já existem por padrão
 	//Os vetores/constantes DELETE e PUT precisam ser criados 
 	$_DELETE = array();

@@ -8,7 +8,7 @@
 	//Tratar as requisições HTTP REST (GET,POST,PUT,DELETE)
 	if(!empty($_GET)){ //Se o verbo GET não estiver vazio
 		//O id é auto_increment no banco de dados e inicia em 1
-		if(isset($_GET["id"])) {
+		if(isset($_GET["id"])){
 			if($_GET["id"]=="0"){//Filtro, o id for igual a 0 vamos listar todas as pessoas
 				echo json_encode($pd->readAll());
 			} else { //Senão vamos listar somente a pessoa com o id informado
@@ -21,14 +21,13 @@
 		$pessoa = new Pessoa();//Cria um novo objeto Pessoa (modelo)
 		$pessoa->setNome($_POST["nome"]);//Preenche o modelo
 		$pessoa->setTelefone($_POST["telefone"]);//Preenche o modelo
-		$sucesso = $pd->create($pessoa);//Executa o método create de DAO passando o modelo como parâmetro
-		if(!isset($sucesso["erro"])) {
+		$sucesso = $pd->create($pessoa);
+		if(!isset($sucesso["erro"])){
 			http_response_code(201);
-		}else {
+		}else{
 			http_response_code(202);
 		}
 		echo json_encode($sucesso);
-		//echo json_encode($pd->create($pessoa));//Executa o método create de DAO passando o modelo como parâmetro
 	}
 	
 	if(!empty($_PUT)){ //Se o verbo PUT não estiver vazio
@@ -42,7 +41,7 @@
 	if(!empty($_DELETE)){ //Se o verbo DELETE não estiver vazio
 		$id = $_DELETE["id"];//Recebe o id
 		$sucesso = $pd->del($id);
-		if(isset($sucesso["erro"])) {
+		if(isset($sucesso["erro"])){
 			http_response_code(405);
 		}
 		echo json_encode($sucesso);

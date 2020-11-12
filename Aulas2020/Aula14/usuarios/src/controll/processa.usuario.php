@@ -20,18 +20,27 @@
 	}
 	
 	if(!empty($_POST)){ //Se o verbo POST não estiver vazio
-		if(!empty($_POST["id"])&&!empty($_POST["login"])&&!empty($_POST["senha"])&&!empty($_POST["tipo"])) {
+		if(!empty($_POST["id"])){
 			$usuario = new Usuario();//Cria um novo objeto Pessoa (modelo)
-		$usuario->setIdPessoa($_POST["id"]);//Preenche o modelo
-		$usuario->setLogin($_POST["login"]);//Preenche o modelo
-		$usuario->setSenha($_POST["senha"]);//Preenche o modelo
-		$usuario->setTipo($_POST["tipo"]);//Preenche o modelo
-		echo json_encode($ud->create($usuario));//Executa o método create de DAO passando o modelo como parâmetro
+			$usuario->setIdPessoa($_POST["id"]);//Preenche o modelo
+			$usuario->setLogin($_POST["login"]);//Preenche o modelo
+			$usuario->setSenha($_POST["senha"]);//Preenche o modelo
+			$usuario->setTipo($_POST["tipo"]);//Preenche o modelo
+			$status = $ud->create($usuario);
+			if(is_object($status)){
+				http_response_code(201);
+			}
+			echo json_encode($status);
 		}
-		if(!empty($_POST["login"])&&!empty($_POST["senha"])) {
+		if(!empty($_POST["login"])&&!empty($_POST["senha"])&&empty($_POST["id"])){
 			$login = $_POST["login"];
 			$senha = $_POST["senha"];
-			echo json_encode($ud->login($login, $senha));
+			$status = $ud->login($login,$senha);
+			if(is_object($status)){
+				header("location:$urlFront?login=".$status->getLogin()."&tipo=".$status->getTipo()."&id=".$status->getIdPessoa());
+			} else {
+				header("location:$urlFront?erro=".$status["erro"]);
+			}
 		}
 	}
 	
@@ -47,7 +56,4 @@
 		$login = $_DELETE["login"];//Recebe o id
 		echo json_encode($ud->del($login));//Executa o método del de DAO passando o login como parâmetro
 	}
-	
 ?>
-	
-

@@ -79,7 +79,7 @@
 			try{
 				$con = new Conexao();
 				$resultSet = Conexao::getInstancia()->query($query);
-				if($resultSet) {
+				if($resultSet){
 					while($linha = $resultSet->fetchObject()){
 						$pessoa = new Pessoa();
 						$pessoa->setIdPessoa($linha->id_pessoa);
