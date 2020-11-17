@@ -169,10 +169,10 @@
 						$usuario->setSenha($dados->senha);
 						$usuario->setTipo($dados->tipo);
 					} else {
-						$usuario["erro"] = "A senha informada nao confere";
+						$usuario["erro"] = "A senha informada não confere";
 					}
 				}else{
-					$usuario["erro"] = "Login nao encontrado";	
+					$usuario["erro"] = "Login não encontrado";	
 				}
 				$con = null;
 			}catch(PDOException $e){
