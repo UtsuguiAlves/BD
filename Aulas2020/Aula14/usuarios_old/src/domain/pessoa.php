@@ -105,21 +105,12 @@
 				$status = Conexao::getInstancia()->prepare($query);//O método prepare retorna um status se a query estiver correta
 				if($status->execute()){//O método execute retorna um boolean true para sucesso e false para fracasso
 					$resultado = $pessoa;
-				} else {
-					$resultado["erro"] = "Não foi possível alterar Pessoa";
-				}
-				$con = null;
-			}catch(PDOException $e){
-				$resultado["erro"] = "Erro de conexão com o BD";	
-			}
-			$query = "UPDATE telefones SET telefone = '$telefone' WHERE id_pessoa = $id";
-			try{
-                $con = new Conexao();
-				$status = Conexao::getInstancia()->prepare($query);
-				if($status->execute()){
-					$resultado = $pessoa;
-				} else {
-					$resultado["erro"] = "Não foi possível alterar Pessoa";
+					if($pessoa->getTelefone() != null){
+						$query = "UPDATE telefones SET telefone = '$telefone' WHERE id_pessoa = $id";
+						Conexao::getInstancia()->prepare($query)->execute();//Altera o telefone sem testar, esta lógica causa um erro de fluxo de dados
+						//Erro de fluxo, pois tanto a sintaxe quanto a lógica estão corretas, porém a necessidade de negócio descrita no MER/DER
+						//Diz que uma pessoa pode ter no mínimo 0 e máximo Muitos telefones, caso a pessoa não possua telefone, este não será adicionado
+					}
 				}
 				$con = null;
 			}catch(PDOException $e){

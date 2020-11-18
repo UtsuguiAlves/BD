@@ -1,8 +1,9 @@
 <?php
     require("../domain/pessoa.php"); //Funciona como import do JAVA requer o arquivo de modelo "pessoa.php"
+	header("Content-type: application/json"); //Configura a resposta no formato universal JSON
 	$pd = new PessoaDAO(); //Objeto da classe PessoaDAO para acesso ao Banco de Dados
 	
-	include("configs.php"); //Inclui as variáveis de ambiente $_PUT e $_DELETE
+	include("putdel.php"); //Inclui as variáveis de ambiente $_PUT e $_DELETE
 	
 	//Tratar as requisições HTTP REST (GET,POST,PUT,DELETE)
 	if(!empty($_GET)){ //Se o verbo GET não estiver vazio
@@ -21,8 +22,10 @@
 		$pessoa->setNome($_POST["nome"]);//Preenche o modelo
 		$pessoa->setTelefone($_POST["telefone"]);//Preenche o modelo
 		$sucesso = $pd->create($pessoa);
-		if(!is_object($sucesso)){
+		if(!isset($sucesso["erro"])){
 			http_response_code(201);
+		}else{
+			http_response_code(202);
 		}
 		echo json_encode($sucesso);
 	}
@@ -31,16 +34,8 @@
 		$pessoa = new Pessoa(); //Cria um novo objeto Pessoa (modelo)
 		$pessoa->setIdPessoa($_PUT["id"]);//Preenche o modelo
 		$pessoa->setNome($_PUT["nome"]);//Preenche o modelo
-		if(isset($_PUT["telefone"])){//Se chegar telefone, preenche o modelo
-			$pessoa->setTelefone($_PUT["telefone"]);//Preenche o modelo
-		}
-		$sucesso = $pd->update($pessoa);
-		if(is_object($sucesso)){
-			http_response_code(202);
-		} else {
-			http_response_code(400);
-		}
-		echo json_encode($sucesso);
+		$pessoa->setTelefone($_PUT["telefone"]);//Preenche o modelo
+		echo json_encode($pd->update($pessoa));//Executa o método update de DAO passando o modelo como parâmetro
 	}
 	
 	if(!empty($_DELETE)){ //Se o verbo DELETE não estiver vazio

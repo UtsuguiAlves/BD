@@ -126,11 +126,7 @@
 			$login = $usuario->getLogin();//Configura os parâmetros para montar a query
 			$senha = $usuario->getSenha();//Configura os parâmetros para montar a query
 			$tipo = $usuario->getTipo();//Configura os parâmetros para montar a query
-			$query = "UPDATE usuarios SET tipo = '$tipo'";
-			if($senha != ""){
-				$query .= ", senha = md5('$senha') ";
-			}
-			$query .= " WHERE login = '$login'";
+			$query = "UPDATE usuarios SET senha = md5('$senha'), tipo = '$tipo' WHERE login = '$login'";
 			try{
                 $con = new Conexao();
 				$status = Conexao::getInstancia()->prepare($query);//O método prepare retorna um status se a query estiver correta
@@ -164,18 +160,19 @@
 				$con = new Conexao();
 				$resultSet = Conexao::getInstancia()->query($query);
 				if($resultSet->fetchObject()){	
-					$query = "SELECT id_pessoa, login, tipo FROM usuarios WHERE login = '$login' AND senha = md5('$senha')";
+					$query = "SELECT * FROM usuarios WHERE login = '$login' AND senha = md5('$senha')";
 					$resultSet = Conexao::getInstancia()->query($query);
 					if($dados = $resultSet->fetchObject()){
 						$usuario = new Usuario();
 						$usuario->setIdPessoa($dados->id_pessoa);
 						$usuario->setLogin($dados->login);
+						$usuario->setSenha($dados->senha);
 						$usuario->setTipo($dados->tipo);
 					} else {
-						$usuario["erro"] = "A senha informada não confere";
+						$usuario["erro"] = "A senha informada nao confere";
 					}
 				}else{
-					$usuario["erro"] = "Login não encontrado";	
+					$usuario["erro"] = "Login nao encontrado";	
 				}
 				$con = null;
 			}catch(PDOException $e){

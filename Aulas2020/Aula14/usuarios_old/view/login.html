@@ -9,7 +9,7 @@
 </head>
 
 <body>
-    <div class="quadro1">
+    <div style="display: flex; flex-direction: column; align-items: center;">
         <table>
             <thead>
                 <tr>
@@ -17,15 +17,17 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td><input type="text" placeholder="login" id="login" /></td>
-                </tr>
-                <tr>
-                    <td><input type="password" placeholder="senha" id="senha" /></td>
-                </tr>
-                <tr>
-                    <td><input type="button" value="Acessar" onclick="acessar()" /></td>
-                </tr>
+                <form method="POST" action="../src/controll/processa.usuario.php">
+                    <tr>
+                        <td><input type="text" placeholder="login" name="login" required /></td>
+                    </tr>
+                    <tr>
+                        <td><input type="password" placeholder="senha" name="senha" required /></td>
+                    </tr>
+                    <tr>
+                        <td><input type="submit" value="Acessar" /></td>
+                    </tr>
+                </form>
             </tbody>
         </table>
         <div class="msg">

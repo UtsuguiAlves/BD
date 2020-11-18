@@ -9,7 +9,7 @@
 </head>
 
 <body onload="carregaPessoas(),carregaUsuarios(),carregaPerfil()">
-    <div class="quadro1">
+    <div style="display: flex; flex-direction: column; align-items: center;">
         <table>
             <thead>
                 <tr>
@@ -21,8 +21,8 @@
                     <td colspan="2">Nome: <input type="text" id="nome" size="50" /></td>
                 </tr>
                 <tr>
-                    <td align="left">Telefones: <input type="text" id="telefones" /></td>
-                    <td align="left">Login: <input type="text" id="login" readonly/></td>
+                    <td align="left" id="telefones">Telefones:</td>
+                    <td align="left">Login: <input type="text" id="login" /></td>
                 </tr>
                 <tr>
                     <td align="left">Senha: <input type="password" id="senha" /></td>
@@ -30,15 +30,12 @@
                 </tr>
                 <tr>
                     <td align="right" colspan="2">
-                        <input type="button" value="Atualizar" onclick="atualizaPerfil('adm')" />
+                        <input type="button" value="Atualizar" />
                         <input type="button" value="Sair" onclick="sair()" />
                     </td>
                 </tr>
             </tbody>
         </table>
-        <div class="msg">
-            <p id="mensagem">Mensagens do Sistema</p>
-        </div>
         <table>
             <thead>
                 <tr>
@@ -55,10 +52,12 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <td>Auto</td>
-                    <td><input type="text" placeholder="Nome" id="nomePessoa"></td>
-                    <td><input type="text" placeholder="Telefone" id="telPessoa"></td>
-                    <td><input type="button" value="Criar" onclick="criaPessoa()"></td>
+                    <form>
+                        <td>Auto</td>
+                        <td><input type="text" placeholder="Nome" name="nome"></td>
+                        <td><input type="text" placeholder="Telefone" name="telefone"></td>
+                        <td><input type="submit" value="Criar"></td>
+                    </form>
                 </tr>
             </tfoot>
         </table>
@@ -79,15 +78,15 @@
             <tfoot>
                 <tr>
                     <form>
-                        <td><input type="number" placeholder="id" id="idUser" style="width:50px"></td>
-                        <td><input type="text" placeholder="login" id="loginUser">
-                            <input type="password" placeholder="senha" id="senhaUser">
+                        <td><input type="number" placeholder="id" name="id" style="width:50px"></td>
+                        <td><input type="text" placeholder="login" name="login">
+                            <input type="password" placeholder="senha" name="senha">
                         </td>
-                        <td><select id="tipoUser">
-                                <option value="comum">Comum</option>
+                        <td><select name="tipo">
                                 <option value="adm">Admin</option>
+                                <option value="comum">Comum</option>
                             </select></td>
-                        <td><input type="button" value="Criar" onclick="criaUsuario()"></td>
+                        <td><input type="submit" value="Criar"></td>
                     </form>
                 </tr>
             </tfoot>

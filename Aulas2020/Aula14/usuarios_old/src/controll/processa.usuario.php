@@ -1,8 +1,9 @@
 <?php
     require("../domain/usuario.php"); //Funciona como import do JAVA requer o arquivo de modelo "pessoa.php"
+	header("Content-type: application/json"); //Configura a resposta no formato universal JSON
 	$ud = new UsuarioDAO(); //Objeto da classe PessoaDAO para acesso ao Banco de Dados
 
-	include("configs.php"); //Inclui as variáveis de ambiente $_PUT e $_DELETE
+	include("putdel.php"); //Inclui as variáveis de ambiente $_PUT e $_DELETE
 	
 	//Tratar as requisições HTTP REST (GET,POST,PUT,DELETE)
 	if(!empty($_GET)){ //Se o verbo GET não estiver vazio
@@ -35,10 +36,11 @@
 			$login = $_POST["login"];
 			$senha = $_POST["senha"];
 			$status = $ud->login($login,$senha);
-			if(!is_object($status)){
-				http_response_code(401);			
+			if(is_object($status)){
+				header("location:$urlFront?login=".$status->getLogin()."&tipo=".$status->getTipo()."&id=".$status->getIdPessoa());
+			} else {
+				header("location:$urlFront?erro=".$status["erro"]);
 			}
-			echo json_encode($status);
 		}
 	}
 	
